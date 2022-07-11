@@ -1,13 +1,14 @@
 {
-  "name": "@uno-lsp/unocss-language-server",
-  "version": "0.0.2",
+  "publisher": "azaleta",
+  "name": "@azaleta/unocss-language-server",
+  "version": "0.0.3",
   "description": "Uno lsp",
   "author": "azaleta <24407500@qq.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/azaleta/unocss-lsp.git",
-    "directory": "packages/autocomplete"
+    "directory": "packages/unocss-language-server"
   },
   "keywords": [
     "lsp"
