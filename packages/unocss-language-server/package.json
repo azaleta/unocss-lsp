@@ -1,10 +1,15 @@
 {
   "name": "@uno-lsp/unocss-language-server",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Uno lsp",
+  "author": "azaleta <24407500@qq.com>",
   "license": "MIT",
-  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/azaleta/unocss-lsp.git",
+    "directory": "packages/autocomplete"
+  },
+  "keywords": ["lsp"],
   "main": "./dist/server.js",
   "bin": {
     "unocss-language-server": "./bin/run.js"
@@ -13,7 +18,8 @@
   "scripts": {
     "build": "npm run clean && tsup",
     "dev": "tsup --watch src",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "release": "bumpp && npm publish"
   },
   "dependencies": {
     "vscode-languageserver": "^8.0.1",
