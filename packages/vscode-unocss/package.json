@@ -1,8 +1,9 @@
 {
-  "name": "@uno-lsp/vscode-unocss",
+  "publisher": "azaleta",
+  "name": "vscode-unocss",
   "version": "0.0.1",
   "description": "",
-  "author": "azaleta",
+  "author": "azaleta <24407500@qq.com>",
   "license": "MIT",
   "keywords": [
     "unocss",
@@ -18,7 +19,7 @@
     "vscode": "^1.68.0"
   },
   "activationEvents": [
-    "onStartupFinished"
+    "onLanguage:plaintext"
   ],
   "contributes": {
     "languages": [
@@ -28,7 +29,24 @@
           "Unocss"
         ]
       }
-    ]
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Example configuration",
+      "properties": {
+        "unocss-lsp.trace.server": {
+          "scope": "window",
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "verbose",
+          "description": "Traces the communication between VS Code and the language server."
+        }
+      }
+    }
   },
   "scripts": {
     "build": "npm run clean && tsup",
@@ -36,11 +54,12 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@uno-lsp/unocss-language-server": "workspace:*",
+    "@azaleta/unocss-language-server": "^0.0.3",
     "vscode-languageclient": "^8.0.1",
     "vscode-languageserver": "^8.0.1"
   },
   "devDependencies": {
-    "@types/vscode": "^1.68.1"
+    "@types/vscode": "^1.68.1",
+    "vsce": "^2.9.2"
   }
 }

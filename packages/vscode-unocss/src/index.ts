@@ -1,11 +1,11 @@
 import path from 'path'
 import type { ExtensionContext } from 'vscode'
 import { workspace } from 'vscode'
-import type { ExecutableOptions, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node'
+import type { ExecutableOptions, LanguageClientOptions, MessageSignature, ServerOptions } from 'vscode-languageclient/node'
 import { LanguageClient, TransportKind } from 'vscode-languageclient/node'
 
-const CLIENT_ID = 'unocss-vscode'
-const CLIENT_NAME = 'UnoCSS VSCode'
+const CLIENT_ID = 'unocss-lsp'
+const CLIENT_NAME = 'UnocssLSP'
 
 const clients: Map<string, LanguageClient> = new Map()
 
@@ -18,6 +18,7 @@ const serverDebugOptions = { execArgv: ['--nolazy', '--inspect=61009'] }
 
 export function activate(context: ExtensionContext) {
   const serverModule = context.asAbsolutePath(path.join('dist', 'lspServer.js'))
+  // const serverModule = context.asAbsolutePath(path.join('dist', '_lspServer.js'))
 
   const serverOptions: ServerOptions = {
     run: {
@@ -42,18 +43,20 @@ export function activate(context: ExtensionContext) {
         language: 'plaintext',
       },
     ],
+    diagnosticCollectionName: 'unocss',
     synchronize: {
       fileEvents: workspace.createFileSystemWatcher('**/.clientrc'),
     },
   }
 
-  const client = new LanguageClient(CLIENT_ID, CLIENT_NAME, serverOptions, clientOptions)
+  // const client = new LanguageClient(CLIENT_ID, CLIENT_NAME, serverOptions, clientOptions)
+  const client = new DebugLanguageClient(CLIENT_ID, CLIENT_NAME, serverOptions, clientOptions)
 
   // Push the disposable to the context's subscriptions so that the
   // client can be deactivated on extension deactivation
-  // context.subscriptions.push(client.start())
-  client.start()
-  console.log('Unocss client started')
+  client.start().catch(error => client.error('Starting the server failed.', error, 'force'))
+  // console.log('Unocss client started')
+  // client.sendRequest('ssss')
   clients.set(CLIENT_ID, client)
 }
 
@@ -63,4 +66,25 @@ export function deactivate(): Thenable<void> | undefined {
     promises.push(client.stop())
 
   return Promise.all(promises).then(() => undefined)
+}
+
+// for debug use only
+class DebugLanguageClient extends LanguageClient {
+  public async sendRequest<R>(type: string | MessageSignature, ...params: any[]): Promise<R> {
+    let res
+    console.log('--------------------------------------------------')
+    if (typeof type == 'string') {
+      console.log(type)
+      console.log(params)
+      res = await super.sendRequest<R>(type, ...params)
+    }
+    else {
+      console.log(type.method)
+      console.log(params)
+      res = await super.sendRequest<R>(type.method, ...params)
+    }
+    console.log('--->')
+    console.log(res)
+    return res
+  }
 }

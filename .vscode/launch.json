@@ -9,9 +9,13 @@
       "request": "launch",
       "name": "Launch Client",
       "runtimeExecutable": "${execPath}",
-      "args": ["--extensionDevelopmentPath=${workspaceRoot}/packages/vscode-unocss"],
+      "args": [
+        "--disable-extensions",
+        "--extensionDevelopmentPath=${workspaceRoot}/packages/vscode-unocss"
+      ],
       "sourceMaps": true,
       "outFiles": ["${workspaceRoot}/packages/vscode-unocss/dist/**/*.js"]
+
     },
     {
       "type": "node",
@@ -20,7 +24,10 @@
       "address": "localhost",
       "port": 61009,
       "sourceMaps": true,
-      "outFiles": ["${workspaceRoot}/packages/unocss-language-server/dist/**/*.cjs"]
+      "outFiles": [
+        "${workspaceRoot}/packages/unocss-language-server/dist/**/*.js",
+        "${workspaceRoot}/packages/vscode-unocss/dist/**/*.js"
+      ]
     }
   ],
   "compounds": [

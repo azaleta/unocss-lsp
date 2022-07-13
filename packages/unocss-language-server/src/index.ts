@@ -1,21 +1,20 @@
 import type { InitializeParams, InitializeResult } from 'vscode-languageserver/node'
 import { StreamMessageReader, StreamMessageWriter, createConnection } from 'vscode-languageserver/node'
 import { version } from '../package.json'
-import UnocssServer from './server'
+import { UnocssServer } from './server'
 
 export function listen() {
   const connection = createConnection(
     new StreamMessageReader(process.stdin),
     new StreamMessageWriter(process.stdout),
   )
+  const server = UnocssServer.initialize(connection)
 
   connection.onInitialize(
     async (params: InitializeParams): Promise<InitializeResult> => {
       connection.console.log(`Initialized server v${version} for ${params.workspaceFolders}`)
-
-      const server = UnocssServer.initialize(connection, params)
-
-      server.register()
+      server.register(params)
+      // server.listen()
 
       return {
         capabilities: server.serverCapabilities(),
@@ -23,5 +22,5 @@ export function listen() {
     },
   )
 
-  connection.listen()
+  server.listen()
 }

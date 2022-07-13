@@ -1,23 +1,39 @@
-import UnocssServer from '@uno-lsp/unocss-language-server'
 import type { InitializeParams, InitializeResult } from 'vscode-languageserver/node'
 import { ProposedFeatures, createConnection } from 'vscode-languageserver/node'
+// import UnocssServer from '../../unocss-language-server/src/server'
+import { UnocssServer } from '../../unocss-language-server/src/server'
 
 const connection = createConnection(ProposedFeatures.all)
 
+const server = UnocssServer.initialize(connection)
+
 connection.onInitialize((params: InitializeParams): InitializeResult => {
   connection.console.info('Unocss LanguageServer initializing...')
-  const server = UnocssServer.initialize(connection, params)
-  server.register()
-  connection.console.log(`Initialized server v${server.version()} for ${params.workspaceFolders}`)
+  server.register(params)
+  connection.console.info(`Initialized server v${server.version()} for ${params.workspaceFolders}`)
 
   return {
     capabilities: server.serverCapabilities(),
   }
 })
 
+connection.onInitialized(() => {
+  connection.console.log(`Initialized server v${server.version()}`)
+  // server.listen()
+})
+
+server.listen()
+
 process.on('unhandledRejection', (reason: any) => {
   connection.console.error(`Unhandled Rejection : ${reason}`)
 })
 
-connection.listen()
+// connection.onHover((_p) => {
+//   connection.console.log('onHover')
+//   return null
+// })
+
+// connection.onRequest((p) => {
+//   connection.console.log(p)
+// })
 
