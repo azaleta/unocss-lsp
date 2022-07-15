@@ -34,6 +34,11 @@
       "type": "object",
       "title": "Example configuration",
       "properties": {
+        "unocss-lsp.disable": {
+          "type": "boolean",
+          "default": false,
+          "description": "Disable the UnoCSS LSP extension"
+        },
         "unocss-lsp.trace.server": {
           "scope": "window",
           "type": "string",

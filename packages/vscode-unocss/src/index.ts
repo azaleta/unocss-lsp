@@ -17,6 +17,15 @@ const serverRunOptions: ExecutableOptions = {
 const serverDebugOptions = { execArgv: ['--nolazy', '--inspect=61009'] }
 
 export function activate(context: ExtensionContext) {
+  const config = workspace.getConfiguration('unocss-lsp')
+  const disabled = config.get<boolean>('disable', false)
+  if (disabled)
+    return
+
+  // const projectPath = workspace.workspaceFolders?.[0].uri.fsPath
+  // if (!projectPath)
+  //   return
+
   const serverModule = context.asAbsolutePath(path.join('dist', 'lspServer.js'))
   // const serverModule = context.asAbsolutePath(path.join('dist', '_lspServer.js'))
 

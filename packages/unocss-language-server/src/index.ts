@@ -8,12 +8,12 @@ export function listen() {
     new StreamMessageReader(process.stdin),
     new StreamMessageWriter(process.stdout),
   )
-  const server = UnocssServer.initialize(connection)
+  const server = UnocssServer.getInstance(connection)
 
   connection.onInitialize(
     async (params: InitializeParams): Promise<InitializeResult> => {
       connection.console.log(`Initialized server v${version} for ${params.workspaceFolders}`)
-      server.register(params)
+      server.initServer(params)
       // server.listen()
 
       return {

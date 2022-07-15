@@ -5,11 +5,11 @@ import { UnocssServer } from '../../unocss-language-server/src/server'
 
 const connection = createConnection(ProposedFeatures.all)
 
-const server = UnocssServer.initialize(connection)
+const server = UnocssServer.getInstance(connection)
 
 connection.onInitialize((params: InitializeParams): InitializeResult => {
   connection.console.info('Unocss LanguageServer initializing...')
-  server.register(params)
+  server.initServer(params)
   connection.console.info(`Initialized server v${server.version()} for ${params.workspaceFolders}`)
 
   return {
@@ -18,7 +18,7 @@ connection.onInitialize((params: InitializeParams): InitializeResult => {
 })
 
 connection.onInitialized(() => {
-  connection.console.log(`Initialized server v${server.version()}`)
+  // connection.console.log(`Initialized server v${server.version()}`)
   // server.listen()
 })
 
