@@ -1,7 +1,7 @@
 {
   "publisher": "azaleta",
   "name": "@azaleta/unocss-language-server",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Uno lsp",
   "author": "azaleta <24407500@qq.com>",
   "license": "MIT",
@@ -17,6 +17,10 @@
   "bin": {
     "unocss-language-server": "./bin/run.js"
   },
+  "files": [
+    "bin",
+    "dist"
+  ],
   "typings": "./dist/server.d.ts",
   "scripts": {
     "build": "npm run clean && tsup",
